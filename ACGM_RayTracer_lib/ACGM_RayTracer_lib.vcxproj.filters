@@ -1,0 +1,157 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Public Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Private Source Files">
+      <UniqueIdentifier>{fa019b39-19dd-439b-902c-5008803ae940}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Private Source Files\Models">
+      <UniqueIdentifier>{8dd789c2-4879-4957-93c4-c69b37c896f2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Public Source Files\Models">
+      <UniqueIdentifier>{7a2567e6-8cda-4878-ada3-66323c1c7295}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Private Source Files\Raytracing">
+      <UniqueIdentifier>{b6d9103e-6479-4b9f-b10d-9c1495bbd54c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Public Source Files\Raytracing">
+      <UniqueIdentifier>{d950d1f4-2162-421b-a69c-ba10be450fa0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Private Source Files\Lights">
+      <UniqueIdentifier>{e79434b5-d1af-4ca5-be26-7843f77a2fe5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Public Source Files\Lights">
+      <UniqueIdentifier>{cea3a111-3444-4b66-9bce-e35b775fa4ea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Public Source Files\Octree">
+      <UniqueIdentifier>{477d4b59-2011-47b4-bfd1-a89b877426d1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Private Source Files\Octree">
+      <UniqueIdentifier>{5fb05b24-c4ba-4998-87c6-22ad2c3a6bd2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Private Source Files\Shaders">
+      <UniqueIdentifier>{ad491372-bbb4-45d7-87c0-fd60e19ee17c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Public Source Files\Shaders">
+      <UniqueIdentifier>{1a7b12eb-0e33-4d35-9fd4-73acf1e0c595}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\ACGM_RayTracer_lib\Scene.h">
+      <Filter>Public Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ACGM_RayTracer_lib\Model.h">
+      <Filter>Public Source Files\Models</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ACGM_RayTracer_lib\Plane.h">
+      <Filter>Public Source Files\Models</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ACGM_RayTracer_lib\Camera.h">
+      <Filter>Public Source Files\Raytracing</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ACGM_RayTracer_lib\Ray.h">
+      <Filter>Public Source Files\Raytracing</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ACGM_RayTracer_lib\Mesh.h">
+      <Filter>Public Source Files\Models</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ACGM_RayTracer_lib\Triangle.h">
+      <Filter>Public Source Files\Models</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ACGM_RayTracer_lib\Light.h">
+      <Filter>Public Source Files\Lights</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ACGM_RayTracer_lib\DirectionalLight.h">
+      <Filter>Public Source Files\Lights</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ACGM_RayTracer_lib\PointLight.h">
+      <Filter>Public Source Files\Lights</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ACGM_RayTracer_lib\SpotLight.h">
+      <Filter>Public Source Files\Lights</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ACGM_RayTracer_lib\OctreeNode.h">
+      <Filter>Public Source Files\Octree</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ACGM_RayTracer_lib\Shader.h">
+      <Filter>Public Source Files\Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ACGM_RayTracer_lib\Hit.h">
+      <Filter>Public Source Files\Raytracing</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ACGM_RayTracer_lib\PhongShader.h">
+      <Filter>Public Source Files\Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ACGM_RayTracer_lib\ShaderInput.h">
+      <Filter>Public Source Files\Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ACGM_RayTracer_lib\CheckerShader.h">
+      <Filter>Public Source Files\Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ACGM_RayTracer_lib\SceneImporter.h">
+      <Filter>Public Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ACGM_RayTracer_lib\Sphere.h">
+      <Filter>Public Source Files\Models</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\Scene.cpp">
+      <Filter>Private Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Model.cpp">
+      <Filter>Private Source Files\Models</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Plane.cpp">
+      <Filter>Private Source Files\Models</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Camera.cpp">
+      <Filter>Private Source Files\Raytracing</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Ray.cpp">
+      <Filter>Private Source Files\Raytracing</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Mesh.cpp">
+      <Filter>Private Source Files\Models</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Triangle.cpp">
+      <Filter>Private Source Files\Models</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Light.cpp">
+      <Filter>Private Source Files\Lights</Filter>
+    </ClCompile>
+    <ClCompile Include="src\DirectionalLight.cpp">
+      <Filter>Private Source Files\Lights</Filter>
+    </ClCompile>
+    <ClCompile Include="src\PointLight.cpp">
+      <Filter>Private Source Files\Lights</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SpotLight.cpp">
+      <Filter>Private Source Files\Lights</Filter>
+    </ClCompile>
+    <ClCompile Include="src\OctreeNode.cpp">
+      <Filter>Private Source Files\Octree</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Shader.cpp">
+      <Filter>Private Source Files\Shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="src\PhongShader.cpp">
+      <Filter>Private Source Files\Shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CheckerShader.cpp">
+      <Filter>Private Source Files\Shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SceneImporter.cpp">
+      <Filter>Private Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Sphere.cpp">
+      <Filter>Private Source Files\Models</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+</Project>
