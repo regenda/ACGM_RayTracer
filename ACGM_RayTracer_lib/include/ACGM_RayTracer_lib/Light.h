@@ -8,18 +8,14 @@ namespace acgm
   class Light
   {
   public:
-    explicit Light(const float &intensity, const glm::vec3 &position);
+    explicit Light(const float &intensity);
     virtual ~Light() = default;
 
     virtual glm::vec3 GetDirectionToLight(const glm::vec3 &point) const = 0;
     virtual float GetIntensityAt(const glm::vec3 &point) const = 0;
-
-    const glm::vec3 &Position() const;
+    virtual float GetDistanceToLight(const glm::vec3 &point) const = 0;
 
   protected:
     float intensity_;
-
-  private:
-    glm::vec3 position_;
   };
 }

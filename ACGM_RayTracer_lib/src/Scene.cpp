@@ -24,7 +24,7 @@ acgm::Scene::Scene()
   std::shared_ptr<PhongShader> phong2 = std::make_shared<PhongShader>(0.5f, 0.5f, 50.f, 0.2f);
   phong2->SetColor(cogs::color::BLACK);
   std::shared_ptr<CheckerShader> check = std::make_shared<CheckerShader>(1.f, phong1, phong2);
-  dolna->SetShader(check);
+  dolna->setShader(check);
   models_.push_back(dolna);
   //models_.push_back(std::make_shared<Plane>(glm::vec3(0.f, 1.f, 0.f), glm::vec3(0.f, -1.f, 0.f), cogs::color::GRAY50)); //horna
   //models_.push_back(std::make_shared<Plane>(glm::vec3(0.f, 0.f, -1.f), glm::vec3(0.f, 0.f, 1.f), cogs::color::FOREST)); //zadna
@@ -33,7 +33,7 @@ acgm::Scene::Scene()
   std::shared_ptr<Model> bunny = std::make_shared<Mesh>(glm::vec3(0.f, 0.f, 0.f), "../../3d-models/bunny.fbx", cogs::color::CRIMSON);
   std::shared_ptr<PhongShader> phongBunny = std::make_shared<PhongShader>(0.5f, 0.5f, 50.f, 0.2f);
   phongBunny->SetColor(bunny->Color());
-  bunny->SetShader(phongBunny);
+  bunny->setShader(phongBunny);
   models_.push_back(bunny);
 
   //light_ = std::make_shared<DirectionalLight>(glm::vec3(0.f, -1.f, 0.f), 0.8f);
@@ -48,7 +48,7 @@ void acgm::Scene::ChangeModel(std::string model)
   models_.back() = std::make_shared<Mesh>(glm::vec3(0.f, 0.f, 0.f), model, models_.back()->Color());
   std::shared_ptr<PhongShader> phongModel = std::make_shared<PhongShader>(0.5f, 0.5f, 50.f, 0.2f);
   phongModel->SetColor(models_.back()->Color());
-  models_.back()->SetShader(phongModel);
+  models_.back()->setShader(phongModel);
 }
 
 void acgm::Scene::Raytrace(hiro::draw::RasterRenderer &renderer) const
@@ -127,7 +127,7 @@ void acgm::Scene::Raytrace(hiro::draw::RasterRenderer &renderer) const
       // if there is an intersection, point is in a shadow
       Ray shadowRay = Ray(intersectPoint, light_->GetDirectionToLight(intersectPoint));
 
-      float tToLight = glm::distance(intersectPoint, light_->Position());
+      float tToLight = light_->GetDistanceToLight(intersectPoint);
 
       for (std::shared_ptr<Model> const &m : models_)
       {

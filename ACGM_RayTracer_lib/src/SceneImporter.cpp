@@ -138,7 +138,7 @@ std::shared_ptr<acgm::Model> acgm::SceneImporter::ReadModel()
   GetLine();
 
   const auto shader = ReadShader();
-  model->SetShader(shader);
+  model->setShader(shader);
   return model;
 }
 

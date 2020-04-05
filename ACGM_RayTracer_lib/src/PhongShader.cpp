@@ -8,6 +8,11 @@ acgm::PhongShader::PhongShader(float kd, float ks, float ns, float ambient)
 
 cogs::Color3f acgm::PhongShader::CalculateColor(const ShaderInput &input) const
 {
+  if (input.is_point_in_shadow)
+  {
+    return ambient_ * Color();
+  }
+
   // Phong Diffuse
   cogs::Color3f diffuse = k_d_ * glm::dot(input.direction_to_light, input.normal) * Color();
 
@@ -16,5 +21,5 @@ cogs::Color3f acgm::PhongShader::CalculateColor(const ShaderInput &input) const
   // Blinn-Phong Specular
   cogs::Color3f specular = k_s_ * glm::pow(glm::dot(h, input.normal), n_s_) * cogs::color::WHITE;
 
-  return ambient_ * Color() + !input.is_point_in_shadow * (diffuse + specular) * input.light_intensity;
+  return ambient_ * Color() + (diffuse + specular) * input.light_intensity;
 }

@@ -2,9 +2,8 @@
 
 acgm::DirectionalLight::DirectionalLight(
   const glm::vec3 &direction,
-  const float &intensity,
-  const glm::vec3 &position)
-  : Light(intensity, position)
+  const float &intensity)
+  : Light(intensity)
   , direction_(direction)
 {
 }
@@ -18,3 +17,8 @@ float acgm::DirectionalLight::GetIntensityAt(const glm::vec3 &point) const
 {
   return intensity_;
 }
+
+float acgm::DirectionalLight::GetDistanceToLight(const glm::vec3 &point) const
+{
+  return FLT_MAX;
+};

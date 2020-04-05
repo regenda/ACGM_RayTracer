@@ -16,7 +16,7 @@ const cogs::Color3f &acgm::Model::Color() const
   return color_;
 }
 
-void acgm::Model::SetShader(std::shared_ptr<Shader> shader)
+void acgm::Model::setShader(std::shared_ptr<Shader> shader)
 {
   shader_ = shader;
 }

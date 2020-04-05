@@ -21,7 +21,7 @@ namespace acgm
     //! Get model color
     const cogs::Color3f &Color() const;
 
-    void SetShader(std::shared_ptr<Shader> shader);
+    void setShader(std::shared_ptr<Shader> shader);
     std::shared_ptr<Shader> getShader();
 
     std::string name;

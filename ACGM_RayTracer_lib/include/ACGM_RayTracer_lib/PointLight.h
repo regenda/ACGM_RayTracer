@@ -14,9 +14,12 @@ namespace acgm
 
     virtual float GetIntensityAt(const glm::vec3 &point) const override;
 
+    virtual float GetDistanceToLight(const glm::vec3 &point) const override;
+
   protected:
     float range_;
     float attL_;
     float attQ_;
+    glm::vec3 position_;
   };
 }
