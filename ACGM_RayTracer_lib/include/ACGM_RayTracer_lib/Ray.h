@@ -10,7 +10,8 @@ namespace acgm
   public:
     Ray(
       const glm::vec3 origin,
-      const glm::vec3 direction);
+      const glm::vec3 direction,
+      const float bias);
 
     const glm::vec3 getOrigin() const;
     const glm::vec3 getDirection() const;
@@ -19,6 +20,6 @@ namespace acgm
   private:
     glm::vec3 origin_;
     glm::vec3 direction_;
-    static const float bias_;
+    float bias_;
   };
 }

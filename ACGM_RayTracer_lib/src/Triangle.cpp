@@ -60,7 +60,7 @@ acgm::Hit acgm::Triangle::Intersect(const acgm::Ray &ray) const
   // inside-outside test
 
   // edges between vertices
-  glm::vec3 edge1 = vertices_[1] - vertices_[0];
+  glm::vec3 edge1 = v_01;
   glm::vec3 edge2 = vertices_[2] - vertices_[1];
   glm::vec3 edge3 = vertices_[0] - vertices_[2];
 

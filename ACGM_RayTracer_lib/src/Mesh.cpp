@@ -53,7 +53,7 @@ acgm::Hit acgm::Mesh::Intersect(const acgm::Ray &ray) const
   glm::vec3 *vertices = mesh_.points->GetPositions();
 
   float min = FLT_MAX;
-  Hit hit;
+  Hit hit, h;
   hit.t = std::nullopt;
 
   // traverse all triangles and find closest intersection with ray
@@ -66,7 +66,7 @@ acgm::Hit acgm::Mesh::Intersect(const acgm::Ray &ray) const
 
     Triangle triangle = Triangle(face, Color());
 
-    Hit h = triangle.Intersect(ray);
+    h = triangle.Intersect(ray);
     if (h.t && h.t.value() < min)
     {
       min = h.t.value();

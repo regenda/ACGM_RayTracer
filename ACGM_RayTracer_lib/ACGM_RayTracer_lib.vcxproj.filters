@@ -38,6 +38,12 @@
     <Filter Include="Public Source Files\Shaders">
       <UniqueIdentifier>{1a7b12eb-0e33-4d35-9fd4-73acf1e0c595}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Public Source Files\Image">
+      <UniqueIdentifier>{7f748c52-a4ce-468a-a5fa-5dbb6af38b74}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Private Source Files\Image">
+      <UniqueIdentifier>{f8b6ca68-c19a-4d12-9710-226734aa4c25}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\ACGM_RayTracer_lib\Scene.h">
@@ -97,6 +103,12 @@
     <ClInclude Include="include\ACGM_RayTracer_lib\Sphere.h">
       <Filter>Public Source Files\Models</Filter>
     </ClInclude>
+    <ClInclude Include="include\ACGM_RayTracer_lib\stb_image.h">
+      <Filter>Public Source Files\Image</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ACGM_RayTracer_lib\Image.h">
+      <Filter>Public Source Files\Image</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Scene.cpp">
@@ -149,6 +161,9 @@
     </ClCompile>
     <ClCompile Include="src\Sphere.cpp">
       <Filter>Private Source Files\Models</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Image.cpp">
+      <Filter>Private Source Files\Image</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

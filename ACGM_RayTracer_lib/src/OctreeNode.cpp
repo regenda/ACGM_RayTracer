@@ -134,13 +134,13 @@ bool acgm::OctreeNode::triangleInsideAABB(glm::vec3 *vertices, glm::vec3 center,
   // use the 3 edges (f), form rays and make ray/AABB intersection test
   // at least 1 edge has to hit AABB
 
-  if (rayAABBIntersection(Ray(t0, f[0]), center, size))
+  if (rayAABBIntersection(Ray(t0, f[0], 0.0001f), center, size))
   { return true; }
 
-  if (rayAABBIntersection(Ray(t1, f[1]), center, size))
+  if (rayAABBIntersection(Ray(t1, f[1], 0.0001f), center, size))
   { return true; }
 
-  if (rayAABBIntersection(Ray(t2, f[2]), center, size))
+  if (rayAABBIntersection(Ray(t2, f[2], 0.0001f), center, size))
   { return true; }
 
 
@@ -259,7 +259,7 @@ bool acgm::OctreeNode::rayAABBIntersection(Ray ray, glm::vec3 center, glm::vec3 
 acgm::Hit acgm::OctreeNode::Intersect(Ray ray)
 {
   float min = FLT_MAX;
-  Hit hit;
+  Hit hit, h;
   hit.t = std::nullopt;
 
   if (rayAABBIntersection(ray, center_, size_))
@@ -268,7 +268,7 @@ acgm::Hit acgm::OctreeNode::Intersect(Ray ray)
     {
       for (Triangle triangle : list_)
       {
-        Hit h = triangle.Intersect(ray);
+        h = triangle.Intersect(ray);
         if (h.t && h.t.value() < min)
         {
           min = h.t.value();
@@ -283,7 +283,7 @@ acgm::Hit acgm::OctreeNode::Intersect(Ray ray)
       {
         if (child_[i] && rayAABBIntersection(ray, childCenter_[i], halfSize))
         {
-          Hit h = child_[i]->Intersect(ray);
+          h = child_[i]->Intersect(ray);
           if (h.t && h.t.value() < min)
           {
             min = h.t.value();

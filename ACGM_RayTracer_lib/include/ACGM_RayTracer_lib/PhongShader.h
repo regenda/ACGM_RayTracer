@@ -9,7 +9,9 @@ namespace acgm
   {
   public:
     PhongShader(float kd, float ks, float ns, float ambient);
+    PhongShader(float kd, float ks, float ns, float ambient, float glossiness, float transparency, float refractive_index);
     virtual cogs::Color3f CalculateColor(const ShaderInput &input) const override;
+    virtual std::vector<float> getTracingProps(glm::vec3 point) const override;
 
   private:
     // constants
@@ -17,5 +19,7 @@ namespace acgm
     float k_s_; // specular
     float n_s_; // shininess
     float ambient_; // ambient
+    float glossiness_; // glossiness
+    float transparency_, refractive_index_;
   };
 }

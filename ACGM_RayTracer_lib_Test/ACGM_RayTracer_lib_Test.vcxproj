@@ -52,7 +52,9 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="RayConstructionTests.cpp" />
     <ClCompile Include="ShadersTests.cpp" />
+    <ClCompile Include="UVtests.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ACGM_RayTracer_lib\ACGM_RayTracer_lib.vcxproj">
@@ -96,7 +98,7 @@
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
-      <AdditionalDependencies>COGS.lib;HIRO.lib;glbinding.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>COGS.lib;HIRO.lib;glbinding.lib;HIRO_DRAW.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -130,7 +132,7 @@
       <SubSystem>Console</SubSystem>
       <OptimizeReferences>true</OptimizeReferences>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
-      <AdditionalDependencies>COGS.lib;HIRO.lib;glbinding.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>COGS.lib;HIRO.lib;glbinding.lib;HIRO_DRAW.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

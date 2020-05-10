@@ -18,6 +18,9 @@ namespace acgm
     //! Get shader color
     const cogs::Color3f &Color() const;
 
+    // return glossiness, transparency and refractive_index at point
+    virtual std::vector<float> getTracingProps(glm::vec3 point) const = 0;
+
   private:
     cogs::Color3f color_;
   };

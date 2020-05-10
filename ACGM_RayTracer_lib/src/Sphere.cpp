@@ -14,10 +14,13 @@ acgm::Hit acgm::Sphere::Intersect(const acgm::Ray &ray) const
   Hit result;
   result.t = std::nullopt;
 
-  glm::vec3 oo = ray.getOrigin() - position_;
+  float bias = ray.getBias();
+  glm::vec3 origin = ray.getOrigin(), dir = ray.getDirection();
 
-  float A = glm::dot(ray.getDirection(), ray.getDirection());
-  float B = -2.0f * glm::dot(oo, ray.getDirection());
+  glm::vec3 oo = origin - position_;
+
+  float A = glm::dot(dir, dir);
+  float B = -2.0f * glm::dot(oo, dir);
   float C = glm::dot(oo, oo) - radius_ * radius_;
   float D = B * B - 4.0f * A * C;
 
@@ -29,13 +32,13 @@ acgm::Hit acgm::Sphere::Intersect(const acgm::Ray &ray) const
   float sD = glm::sqrt(D);
 
   float t1 = 0.5f * (B + sD) / A;
-  if (t1 < ray.getBias())
+  if (t1 < bias)
   {
     t1 = INFINITY;
   }
 
   float t2 = 0.5f * (B - sD) / A;
-  if (t2 < ray.getBias())
+  if (t2 < bias)
   {
     t2 = INFINITY;
   }
@@ -47,7 +50,7 @@ acgm::Hit acgm::Sphere::Intersect(const acgm::Ray &ray) const
   }
 
   result.t = t;
-  result.normal = glm::normalize(ray.getOrigin() + t * ray.getDirection() - position_);
+  result.normal = glm::normalize(origin + t * dir - position_);
   return result;
 }
 

@@ -13,6 +13,8 @@ namespace acgm
 
     void SetShaders(std::shared_ptr<Shader> shader1, std::shared_ptr<Shader> shader2);
 
+    virtual std::vector<float> getTracingProps(glm::vec3 point) const override;
+
   private:
     float size_;
 

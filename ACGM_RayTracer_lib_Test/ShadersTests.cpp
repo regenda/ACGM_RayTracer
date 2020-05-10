@@ -60,7 +60,7 @@ TEST(ShadersTests, CheckerShaderCalculateColorTest1)
   std::shared_ptr<acgm::Shader> phong2 = std::make_shared<acgm::PhongShader>(0.25f, 0.6f, 100.f, 0.15f);
   phong2->SetColor(cogs::color::BLUE);
 
-  std::shared_ptr<acgm::Shader> checker = std::make_shared<acgm::CheckerShader>(0.8, phong1, phong2);
+  std::shared_ptr<acgm::Shader> checker = std::make_shared<acgm::CheckerShader>(0.8f, phong1, phong2);
 
   acgm::ShaderInput shaderInput;
   shaderInput.point = glm::vec3(0.85f, 1.f, -1.f);
@@ -87,7 +87,7 @@ TEST(ShadersTests, CheckerShaderCalculateColorTest2)
   std::shared_ptr<acgm::Shader> phong2 = std::make_shared<acgm::PhongShader>(0.25f, 0.6f, 100.f, 0.15f);
   phong2->SetColor(cogs::color::BLUE);
 
-  std::shared_ptr<acgm::Shader> checker = std::make_shared<acgm::CheckerShader>(0.8, phong1, phong2);
+  std::shared_ptr<acgm::Shader> checker = std::make_shared<acgm::CheckerShader>(0.8f, phong1, phong2);
 
   acgm::ShaderInput shaderInput;
   shaderInput.point = glm::vec3(0.f, 1.f, -1.f);

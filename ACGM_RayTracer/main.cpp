@@ -1,6 +1,6 @@
 #include <HIRO/HIRO.h>
 
-#include <COGS/Mesh.h>
+// #include <COGS/Mesh.h>
 
 #include "src/RayTracerResource.h"
 

@@ -32,8 +32,10 @@ void RayTracerGadget::GenerateGui(hiro::GuiGenerator &gui)
     });
   */
   model_selector_ = gui.AddDroplist("Scene")
-    ->AddItemsIndexed({ "scene0.txt", "scene1.txt",  "scene2.txt" })
+    ->AddItemsIndexed({"scene0.txt", "scene1.txt",  "scene2.txt", "scene3.txt", "scene4.txt",  "scene5.txt", "scene6.txt", "scene7.txt", "scene8.txt"})
     ->Set(0);
+  reflection_depth_ = gui.AddNumericInt("Max reflection")->SetMinMax(0, 20)->Set(10);
+  refraction_depth_ = gui.AddNumericInt("Max transparency")->SetMinMax(0, 20)->Set(10);
   octree_check_ = gui.AddCheckbox("Octree")->Set(false);
   render_button_ = gui.AddButton("Render Scene")->Subscribe(std::bind(&RayTracerGadget::Raytrace, this, std::placeholders::_1));
 }
@@ -46,7 +48,10 @@ void RayTracerGadget::Raytrace(const hiro::gui::Button *btn) const
   sceneImporter->Import(model_selector_->GetText());
   auto renderer = GetResource<RayTracerResource>()->GetRenderer();
   renderer->SetResolution(sceneImporter->GetRenderOptions().resolution);
-  sceneImporter->GetScene()->Raytrace(*renderer);
+
+  auto scene = sceneImporter->GetScene();
+  scene->SetDepths(reflection_depth_->Get(), refraction_depth_->Get());
+  scene->Raytrace(*renderer);
 }
 
 void RayTracerGadget::ChangeModel(const hiro::gui::Droplist *drp)
