@@ -13,7 +13,7 @@ namespace acgm
   {
   public:
     Mesh(glm::vec3 position, std::string model, const cogs::Color3f &color);
-    Mesh(std::string model, glm::mat4 transform, bool octree);
+    Mesh(std::string model, glm::mat4 transform, bool octree, bool smooth);
     virtual Hit Intersect(const acgm::Ray &ray) const override;
 
     cogs::Mesh getMesh();
@@ -21,6 +21,7 @@ namespace acgm
   private:
     cogs::Mesh mesh_;
     cogs::Transform transform_;
+    bool smooth_;
 
     // according to Christian Rumpf
     // https://computergraphicsguide.blogspot.com/2015/09/speed-up-ray-casting-with-octrees.html

@@ -9,8 +9,8 @@ namespace acgm
     glm::vec3 point;
     glm::vec3 normal;
     glm::vec3 direction_to_eye;
-    glm::vec3 direction_to_light;
-    float light_intensity;
-    bool is_point_in_shadow;
+    std::vector<glm::vec3> direction_to_light;
+    std::vector<float> light_intensity;
+    std::vector<bool> is_point_in_shadow;
   };
 }

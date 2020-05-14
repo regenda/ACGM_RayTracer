@@ -133,7 +133,7 @@ std::shared_ptr<acgm::Model> acgm::SceneImporter::ReadModel()
     auto file_name = GetLine();
     std_ext::Trim(file_name);
     const auto transform = ReadMat4();
-    model = std::make_shared<Mesh>(file_name, transform, octree);
+    model = std::make_shared<Mesh>(file_name, transform, octree, smooth);
   }
   model->name = model_name;
   GetLine();
@@ -221,6 +221,19 @@ std::shared_ptr<acgm::Light> acgm::SceneImporter::ReadLight()
   return light;
 }
 
+std::vector<std::shared_ptr<acgm::Light>> acgm::SceneImporter::ReadLights()
+{
+  size_t lights_count;
+  stream_ >> lights_count;
+  std::vector<std::shared_ptr<Light>> lights;
+  lights.reserve(lights_count);
+  for (size_t i = 0; i < lights_count; ++i)
+  {
+    lights.push_back(ReadLight());
+  }
+  return lights;
+}
+
 std::shared_ptr<acgm::Scene> acgm::SceneImporter::ReadScene()
 {
   const auto bias = ReadFloat();
@@ -230,8 +243,10 @@ std::shared_ptr<acgm::Scene> acgm::SceneImporter::ReadScene()
   auto enviro_image_file = GetLine();           // #UNLOCKED at Environment seminar
   std_ext::Trim(enviro_image_file);
   const auto camera = ReadCamera();
-  const auto light = ReadLight();
+  //const auto light = ReadLight();
+  const auto lights = ReadLights();
   const auto models = ReadModels();
 
-  return std::make_shared<Scene>(camera, light, models, enviro_image_file, enviro_up, enviro_seam, index_of_refraction, bias);
+  //return std::make_shared<Scene>(camera, light, models, enviro_image_file, enviro_up, enviro_seam, index_of_refraction, bias);
+  return std::make_shared<Scene>(camera, lights, models, enviro_image_file, enviro_up, enviro_seam, index_of_refraction, bias);
 }

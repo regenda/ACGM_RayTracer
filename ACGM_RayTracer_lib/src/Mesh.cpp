@@ -18,8 +18,8 @@ acgm::Mesh::Mesh(
   InitializeOctree();
 }
 
-acgm::Mesh::Mesh(std::string model, glm::mat4 transform, bool octree)
-  : transform_(transform)
+acgm::Mesh::Mesh(std::string model, glm::mat4 transform, bool octree, bool smooth)
+  : transform_(transform), smooth_(smooth)
 {
   mesh_.Import(model);
   mesh_.points->Transform(transform_);
@@ -51,6 +51,7 @@ acgm::Hit acgm::Mesh::Intersect(const acgm::Ray &ray) const
 
   std::vector<glm::uvec3> faceIndices = mesh_.faces->GetFaces();
   glm::vec3 *vertices = mesh_.points->GetPositions();
+  glm::vec3 *normales = mesh_.points->GetNormals();
 
   float min = FLT_MAX;
   Hit hit, h;
@@ -64,9 +65,24 @@ acgm::Hit acgm::Mesh::Intersect(const acgm::Ray &ray) const
     face[1] = vertices[faceIndices[i].y];
     face[2] = vertices[faceIndices[i].z];
 
-    Triangle triangle = Triangle(face, Color());
+    if (smooth_)
+    {
+      glm::vec3 normals[3];
+      normals[0] = normales[faceIndices[i].x];
+      normals[1] = normales[faceIndices[i].y];
+      normals[2] = normales[faceIndices[i].z];
 
-    h = triangle.Intersect(ray);
+      Triangle triangle = Triangle(face, normals);
+
+      h = triangle.Intersect(ray);
+    }
+    else
+    {
+      Triangle triangle = Triangle(face, Color());
+
+      h = triangle.Intersect(ray);
+    }
+
     if (h.t && h.t.value() < min)
     {
       min = h.t.value();
@@ -119,6 +135,7 @@ void acgm::Mesh::BuildOctree()
 {
   std::vector<glm::uvec3> faceIndices = mesh_.faces->GetFaces();
   glm::vec3 *vertices = mesh_.points->GetPositions();
+  glm::vec3 *normales = mesh_.points->GetNormals();
 
   for (int i = 0; i < faceIndices.size(); i++)
   {
@@ -127,8 +144,22 @@ void acgm::Mesh::BuildOctree()
     face[1] = vertices[faceIndices[i].y];
     face[2] = vertices[faceIndices[i].z];
 
-    // add triangle to octree
-    Triangle triangle = Triangle(face, Color());
-    root_->addTriangle(triangle);
+    if (smooth_)
+    {
+      glm::vec3 normals[3];
+      normals[0] = normales[faceIndices[i].x];
+      normals[1] = normales[faceIndices[i].y];
+      normals[2] = normales[faceIndices[i].z];
+
+      // add triangle to octree
+      Triangle triangle = Triangle(face, normals);
+      root_->addTriangle(triangle);
+    }
+    else
+    {
+      // add triangle to octree
+      Triangle triangle = Triangle(face, Color());
+      root_->addTriangle(triangle);
+    }
   }
 }

@@ -17,19 +17,22 @@ constexpr float minProduct = 0.02f;
 
 acgm::Scene::Scene(
   std::shared_ptr<Camera> camera,
-  std::shared_ptr<Light> light,
+  //std::shared_ptr<Light> light,
+  std::vector<std::shared_ptr<Light>> lights,
   std::vector<std::shared_ptr<Model>> models,
   std::string enviro_image_file,
   glm::vec3 enviro_up,
   glm::vec3 enviro_seam,
   float index_of_refraction,
   float bias)
-  : camera_(camera), light_(light), models_(models)
+  : camera_(camera), /*light_(light), */lights_(lights), models_(models)
   , enviro_image_file_(enviro_image_file), enviro_up_(enviro_up), enviro_seam_(enviro_seam)
   , index_of_refraction_(index_of_refraction), bias_(bias)
 {
   if(!enviro_image_file_.empty())
   { image_ = std::make_shared<Image>(enviro_image_file_); }
+
+  //lights_.push_back(light);
 }
 
 acgm::Scene::Scene()
@@ -55,7 +58,7 @@ acgm::Scene::Scene()
 
   //light_ = std::make_shared<DirectionalLight>(glm::vec3(0.f, -1.f, 0.f), 0.8f);
   //light_ = std::make_shared<PointLight>(2.f, 0.5f, glm::vec3(1.f, 2.f, 0.f), 1.f, 0.f);
-  light_ = std::make_shared<SpotLight>(1.f, 1.f, glm::vec3(-5.f, 5.f, 2.f), 0.005f, 0.005f, glm::vec3(3.f, -5.f, -2.f), 45.f, 2.f);
+  //light_ = std::make_shared<SpotLight>(1.f, 1.f, glm::vec3(-5.f, 5.f, 2.f), 0.005f, 0.005f, glm::vec3(3.f, -5.f, -2.f), 45.f, 2.f);
 
   camera_ = std::make_shared<Camera>(glm::vec3(0.f, 2.f, 3.5f), glm::vec3(0.f, 0.f, 0.f));
 }
@@ -117,7 +120,7 @@ void acgm::Scene::Raytrace(hiro::draw::RasterRenderer &renderer) const
   }
 }
 
-glm::vec2 acgm::Scene::CalculateUV(glm::vec3 view) const
+glm::vec2 acgm::Scene::CalculateUV(glm::vec3 &view) const
 {
   float dot_view_up = glm::dot(view, enviro_up_);
   glm::vec3 X = glm::normalize(view - enviro_up_ * dot_view_up);
@@ -178,24 +181,28 @@ cogs::Color3f acgm::Scene::Trace(const acgm::Ray &ray, const int reflection_dept
   ShaderInput shaderInput;
   shaderInput.point = intersectPoint;
   shaderInput.direction_to_eye = -dir;
-  shaderInput.direction_to_light = light_->GetDirectionToLight(intersectPoint);
-  shaderInput.light_intensity = light_->GetIntensityAt(intersectPoint);
-  shaderInput.is_point_in_shadow = false;
   shaderInput.normal = hit.normal;
 
-  // create shadow ray from intersection point to ligth and check possible intersection
-  // if there is an intersection, point is in a shadow
-  Ray shadowRay = Ray(intersectPoint, shaderInput.direction_to_light, bias_);
-
-  float tToLight = light_->GetDistanceToLight(intersectPoint);
-
-  for (std::shared_ptr<Model> const &m : models_)
+  for (std::shared_ptr<Light> const &l : lights_)
   {
-    h = m->Intersect(shadowRay);
-    if (h.t && h.t.value() < tToLight)
+    shaderInput.direction_to_light.push_back(l->GetDirectionToLight(intersectPoint));
+    shaderInput.light_intensity.push_back(l->GetIntensityAt(intersectPoint));
+    shaderInput.is_point_in_shadow.push_back(false);
+
+    // create shadow ray from intersection point to ligth and check possible intersection
+    // if there is an intersection, point is in a shadow
+    Ray shadowRay = Ray(intersectPoint, shaderInput.direction_to_light.back(), bias_);
+
+    float tToLight = l->GetDistanceToLight(intersectPoint);
+
+    for (std::shared_ptr<Model> const &m : models_)
     {
-      shaderInput.is_point_in_shadow = true;
-      break;
+      h = m->Intersect(shadowRay);
+      if (h.t && h.t.value() < tToLight)
+      {
+        shaderInput.is_point_in_shadow.back() = true;
+        break;
+      }
     }
   }
 
@@ -225,6 +232,13 @@ cogs::Color3f acgm::Scene::Trace(const acgm::Ray &ray, const int reflection_dept
   float transparency = props[1];
   float refractive_index = props[2];
 
+  /*// Fresnel effect using Schlick’s Approximation
+    float R_0 = (inside) ?
+    (refractive_index - index_of_refraction_) / (refractive_index + index_of_refraction_) :
+    (index_of_refraction_ - refractive_index) / (index_of_refraction_ + refractive_index);
+    R_0 *= R_0;
+    float R_theta = R_0 + (1.f - R_0) * std::pow(1.f - cos1, 5);*/
+
   float eta = (inside) ? (refractive_index / index_of_refraction_) : (index_of_refraction_ / refractive_index);
 
   std::optional<Ray> refractionRay = Refract(intersectPoint, dir, hit.normal, cos1, eta);
@@ -244,6 +258,7 @@ cogs::Color3f acgm::Scene::Trace(const acgm::Ray &ray, const int reflection_dept
     if (refraction_depth < refraction_max_ && productT >= minProduct)
     {
       color += transparency * Trace(refractionRay.value(), reflection_depth, refraction_depth + 1, productT);
+      //color += (1.f - R_theta) * transparency * Trace(refractionRay.value(), reflection_depth, refraction_depth + 1, productT);
     }
   }
 
@@ -258,6 +273,7 @@ cogs::Color3f acgm::Scene::Trace(const acgm::Ray &ray, const int reflection_dept
       {
         Ray reflectionRay = Reflect(intersectPoint, dir, hit.normal, cos1);
         color += glossiness * Trace(reflectionRay, reflection_depth + 1, refraction_depth, productG);
+        //color += R_theta * glossiness * Trace(reflectionRay, reflection_depth + 1, refraction_depth, productG);
       }
     }
     else // total internal reflection
@@ -268,6 +284,7 @@ cogs::Color3f acgm::Scene::Trace(const acgm::Ray &ray, const int reflection_dept
       {
         Ray reflectionRay = Reflect(intersectPoint, dir, hit.normal, cos1);
         color += (glossiness + transparency) * Trace(reflectionRay, reflection_depth + 1, refraction_depth, together);
+        //color += /*R_theta * */(glossiness + transparency) * Trace(reflectionRay, reflection_depth + 1, refraction_depth, together);
       }
     }
   }
@@ -275,14 +292,14 @@ cogs::Color3f acgm::Scene::Trace(const acgm::Ray &ray, const int reflection_dept
   return color;
 }
 
-acgm::Ray acgm::Scene::Reflect(glm::vec3 intersectPoint, glm::vec3 dir, glm::vec3 normal, float cos1) const
+acgm::Ray acgm::Scene::Reflect(glm::vec3 &intersectPoint, glm::vec3 &dir, glm::vec3 &normal, float cos1) const
 {
   glm::vec3 reflectDir = 2 * cos1 * normal + dir;
 
   return Ray(intersectPoint, reflectDir, bias_);
 }
 
-std::optional<acgm::Ray> acgm::Scene::Refract(glm::vec3 intersectPoint, glm::vec3 dir, glm::vec3 normal, float cos1, float eta) const
+std::optional<acgm::Ray> acgm::Scene::Refract(glm::vec3 &intersectPoint, glm::vec3 &dir, glm::vec3 &normal, float cos1, float eta) const
 {
   float cos_theta_2_sqr = 1.0f - eta * eta * (1.0f - cos1 * cos1);
   if (cos_theta_2_sqr <= 0)

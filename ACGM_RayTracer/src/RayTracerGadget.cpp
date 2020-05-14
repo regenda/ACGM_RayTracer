@@ -37,6 +37,7 @@ void RayTracerGadget::GenerateGui(hiro::GuiGenerator &gui)
   reflection_depth_ = gui.AddNumericInt("Max reflection")->SetMinMax(0, 20)->Set(10);
   refraction_depth_ = gui.AddNumericInt("Max transparency")->SetMinMax(0, 20)->Set(10);
   octree_check_ = gui.AddCheckbox("Octree")->Set(false);
+  smooth_check_ = gui.AddCheckbox("Smooth")->Set(false);
   render_button_ = gui.AddButton("Render Scene")->Subscribe(std::bind(&RayTracerGadget::Raytrace, this, std::placeholders::_1));
 }
 
@@ -45,6 +46,7 @@ void RayTracerGadget::Raytrace(const hiro::gui::Button *btn) const
   //scene.Raytrace(*GetResource<RayTracerResource>()->GetRenderer());
 
   sceneImporter->octree = octree_check_->Get();
+  sceneImporter->smooth = smooth_check_->Get();
   sceneImporter->Import(model_selector_->GetText());
   auto renderer = GetResource<RayTracerResource>()->GetRenderer();
   renderer->SetResolution(sceneImporter->GetRenderOptions().resolution);

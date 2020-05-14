@@ -30,7 +30,7 @@ namespace acgm
     static const int SHADERTYPE_CHECKER;
 
     // whether we want octree speedup for mesh models
-    bool octree;
+    bool octree, smooth;
 
     SceneImporter() = default;
     ~SceneImporter() = default;
@@ -54,6 +54,7 @@ namespace acgm
     std::vector<std::shared_ptr<Model>> ReadModels();
     std::shared_ptr<Shader> ReadShader();
     std::shared_ptr<Light> ReadLight();
+    std::vector<std::shared_ptr<Light>> ReadLights();
     std::shared_ptr<Scene> ReadScene();
   };
 

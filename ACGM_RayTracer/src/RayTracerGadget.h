@@ -35,5 +35,6 @@ private:
   hiro::gui::Droplist *model_selector_;
   hiro::gui::Button *render_button_;
   hiro::gui::Checkbox *octree_check_;
+  hiro::gui::Checkbox *smooth_check_;
   hiro::gui::NumericInt *reflection_depth_, *refraction_depth_;
 };
