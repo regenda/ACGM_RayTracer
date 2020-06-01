@@ -14,8 +14,8 @@ namespace acgm
     OctreeNode(glm::vec3 &center, glm::vec3 &size, unsigned int level, OctreeNode *parent = NULL);
     ~OctreeNode();
 
-    void addTriangle(Triangle triangle);
-    Hit Intersect(Ray ray);
+    void addTriangle(Triangle &triangle);
+    Hit Intersect(const Ray &ray);
 
   private:
 
@@ -37,8 +37,8 @@ namespace acgm
     bool limitReached_;
     std::vector<Triangle> list_;
 
-    bool triangleInsideAABB(glm::vec3 *vertices, glm::vec3 center, glm::vec3 size);
-    bool pointInsideAABB(glm::vec3 point, glm::vec3 center, glm::vec3 size);
-    bool rayAABBIntersection(Ray ray, glm::vec3 center, glm::vec3 size);
+    bool triangleInsideAABB(glm::vec3 *vertices, glm::vec3 &center, glm::vec3 &size);
+    bool pointInsideAABB(glm::vec3 &point, glm::vec3 &center, glm::vec3 &size);
+    bool rayAABBIntersection(Ray ray, glm::vec3 &center, glm::vec3 &size);
   };
 }

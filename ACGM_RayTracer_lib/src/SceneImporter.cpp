@@ -244,6 +244,7 @@ std::shared_ptr<acgm::Scene> acgm::SceneImporter::ReadScene()
   std_ext::Trim(enviro_image_file);
   const auto camera = ReadCamera();
   //const auto light = ReadLight();
+  // Multiple Light Sources
   const auto lights = ReadLights();
   const auto models = ReadModels();
 

@@ -53,10 +53,15 @@ acgm::Hit acgm::Triangle::Intersect(const acgm::Ray &ray) const
   glm::vec3 v_01 = vertices_[1] - vertices_[0];
   glm::vec3 v_02 = vertices_[2] - vertices_[0];
 
-  // triangle normal
+  // triangle non-normalized normal
   glm::vec3 normal = glm::cross(v_01, v_02);
 
-  float area2 = glm::length(normal);
+  // 2 x triangle area for calculating barycentric coordinates
+  float area2;
+  if (smooth_)
+  {
+    area2 = glm::length(normal);
+  }
 
   normal = glm::normalize(normal);
   result.normal = normal;
@@ -107,12 +112,15 @@ acgm::Hit acgm::Triangle::Intersect(const acgm::Ray &ray) const
   }
   result.t = t;
 
+  // Smooth Normals
   if (smooth_)
   {
+    // Barycentric Coordinates
     float u = glm::length(cros2) / area2;
     float v = glm::length(cros3) / area2;
 
     result.normal = glm::normalize(u * normals_[0] + v * normals_[1] + (1 - u - v) * normals_[2]);
   }
+
   return result;
 }

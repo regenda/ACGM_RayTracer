@@ -183,6 +183,12 @@ cogs::Color3f acgm::Scene::Trace(const acgm::Ray &ray, const int reflection_dept
   shaderInput.direction_to_eye = -dir;
   shaderInput.normal = hit.normal;
 
+  size_t lights_count = lights_.size();
+  shaderInput.direction_to_light.reserve(lights_count);
+  shaderInput.light_intensity.reserve(lights_count);
+  shaderInput.is_point_in_shadow.reserve(lights_count);
+
+  // Multiple Light Sources
   for (std::shared_ptr<Light> const &l : lights_)
   {
     shaderInput.direction_to_light.push_back(l->GetDirectionToLight(intersectPoint));

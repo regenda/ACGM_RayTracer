@@ -38,6 +38,8 @@ acgm::OctreeNode::OctreeNode(
   {
     child_[i] = NULL;
   }
+
+  list_.reserve(LIMIT_MAX);
 }
 
 acgm::OctreeNode::~OctreeNode()
@@ -49,7 +51,7 @@ acgm::OctreeNode::~OctreeNode()
   }
 }
 
-void acgm::OctreeNode::addTriangle(Triangle triangle)
+void acgm::OctreeNode::addTriangle(Triangle &triangle)
 {
   glm::vec3 halfSize = size_ / 2.f;
   if (!limitReached_ || level_ == LEVEL_MAX)
@@ -76,7 +78,8 @@ void acgm::OctreeNode::addTriangle(Triangle triangle)
           }
         }
       }
-      list_.clear();
+      list_.clear(); // size to 0
+      list_.shrink_to_fit(); // capacity to 0
     }
   }
   else
@@ -98,7 +101,7 @@ void acgm::OctreeNode::addTriangle(Triangle triangle)
   }
 }
 
-bool acgm::OctreeNode::triangleInsideAABB(glm::vec3 *vertices, glm::vec3 center, glm::vec3 size)
+bool acgm::OctreeNode::triangleInsideAABB(glm::vec3 *vertices, glm::vec3 &center, glm::vec3 &size)
 {
   glm::vec3 t0 = vertices[0];
   if (pointInsideAABB(t0, center, size))
@@ -160,9 +163,9 @@ bool acgm::OctreeNode::triangleInsideAABB(glm::vec3 *vertices, glm::vec3 center,
       float min = glm::min(glm::min(p0, p1), p2);
       float max = glm::max(glm::max(p0, p1), p2);
 
-      float x = a.x < 0.0 ? -a.x : a.x;
-      float y = a.y < 0.0 ? -a.y : a.y;
-      float z = a.z < 0.0 ? -a.z : a.z;
+      float x = a.x < 0 ? -a.x : a.x;
+      float y = a.y < 0 ? -a.y : a.y;
+      float z = a.z < 0 ? -a.z : a.z;
 
       a = glm::vec3(x, y, z);
 
@@ -175,7 +178,7 @@ bool acgm::OctreeNode::triangleInsideAABB(glm::vec3 *vertices, glm::vec3 center,
   return true;
 }
 
-bool acgm::OctreeNode::pointInsideAABB(glm::vec3 point, glm::vec3 center, glm::vec3 size)
+bool acgm::OctreeNode::pointInsideAABB(glm::vec3 &point, glm::vec3 &center, glm::vec3 &size)
 {
   glm::vec3 min = center - size;
   glm::vec3 max = center + size;
@@ -183,7 +186,7 @@ bool acgm::OctreeNode::pointInsideAABB(glm::vec3 point, glm::vec3 center, glm::v
   return point.x >= min.x && point.x <= max.x && point.y >= min.y && point.y <= max.y && point.z >= min.z && point.z <= max.z;
 }
 
-bool acgm::OctreeNode::rayAABBIntersection(Ray ray, glm::vec3 center, glm::vec3 size)
+bool acgm::OctreeNode::rayAABBIntersection(Ray ray, glm::vec3 &center, glm::vec3 &size)
 {
   glm::vec3 start = ray.getOrigin();
 
@@ -256,7 +259,7 @@ bool acgm::OctreeNode::rayAABBIntersection(Ray ray, glm::vec3 center, glm::vec3 
   return false;
 }
 
-acgm::Hit acgm::OctreeNode::Intersect(Ray ray)
+acgm::Hit acgm::OctreeNode::Intersect(const Ray &ray)
 {
   float min = FLT_MAX;
   Hit hit, h;

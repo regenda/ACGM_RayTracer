@@ -151,7 +151,7 @@ void acgm::Mesh::BuildOctree()
       normals[1] = normales[faceIndices[i].y];
       normals[2] = normales[faceIndices[i].z];
 
-      // add triangle to octree
+      // add triangle with vertex normals to octree
       Triangle triangle = Triangle(face, normals);
       root_->addTriangle(triangle);
     }
